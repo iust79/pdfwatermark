@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 Branch 2 Test 3.1
 Branch 2 Test 3.2
+=======
+Master 3.1
+>>>>>>> master
