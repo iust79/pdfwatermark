@@ -14,6 +14,7 @@ import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,7 +25,8 @@ import java.util.stream.Stream;
 
 public class PdfWatermarkApp {
 	
-	public static void modPdf(String item, ImageData wimage, int i, String inputPdfPath2, String outputPdfPath2, PdfExtGState gs ) {
+
+	public static void modPdf(String item, int i, String inputPdfPath2, String outputPdfPath2) {
 		
 		
 		PdfDocument pdfDoc;
@@ -35,7 +37,17 @@ public class PdfWatermarkApp {
 			e.printStackTrace();
 			return;
 		}
+			
+		ImageData image=null;
+		try {
+			 image = ImageDataFactory.create("i:\\_LOTURI_MF\\T\\TEST\\STAMP\\logo.png");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		        PdfExtGState gs = new PdfExtGState();
+		        gs.setFillOpacity(0.5f); // 50% opacity
 		   
     	
         System.out.println("create pdfDoc nr. " +i);
@@ -61,43 +73,40 @@ public class PdfWatermarkApp {
             canvas.saveState();
             canvas.setExtGState(gs);
  //           canvas.addImage(watermarkImage, 100, 0, 0, 100, x, y);
-            canvas.addImage(wimage, 100, 0, 0, 160, y, x);
+            canvas.addImage(image, 100, 0, 0, 160, y, x);
             canvas.restoreState();
   //      }
             System.out.println("Ready to close pdfDOc nr. "+i);
             
         pdfDoc.close();
 	}
+
 	
-//	static String inputPdfPath = "i:\\_LOTURI_MF\\T\\TEST\\";
-//	static String outputPdfPath = "i:\\_LOTURI_MF\\T\\TEST\\MOD\\";
-//	static String directoryPath = "i:\\_LOTURI_MF\\T\\TEST\\"; // replace with your directory
-//	static ImageData image = ImageDataFactory.create("i:\\_LOTURI_MF\\T\\TEST\\STAMP\\logo.png");
-//	static PdfExtGState gs = new PdfExtGState();
+
 	
     public static void main(String[] args) throws Exception {
- //       String inputPdfPath = "c:\\Users\\iulian.stoian\\Desktop\\TEST\\sample.pdf"; // Path to your existing PDF
+    	
+    	
+    	
+
     	
     	String inputPdfPath = "i:\\_LOTURI_MF\\T\\TEST\\";
-    	
-//        String outputPdfPath = "c:\\Users\\iulian.stoian\\Desktop\\TEST\\MOD\\output.pdf"; // Path for the watermarked PDF
-
+    	    	
         String outputPdfPath = "i:\\_LOTURI_MF\\T\\TEST\\MOD\\";
         		
         String directoryPath = "i:\\_LOTURI_MF\\T\\TEST\\"; // replace with your directory
-   //     String newFileName = "newFile"; // replace with your new file name
         
         List<String> fileNames = new ArrayList<>();
         
  //       PdfDocument pdfDoc = new PdfDocument(new PdfReader(inputPdfPath), new PdfWriter(outputPdfPath));
-        ImageData image = ImageDataFactory.create("i:\\_LOTURI_MF\\T\\TEST\\STAMP\\logo.png");
+ //       ImageData image = ImageDataFactory.create("i:\\_LOTURI_MF\\T\\TEST\\STAMP\\logo.png");
 
         // Load your watermark image
 //        PdfImageXObject watermarkImage = new PdfImageXObject(image); // Replace with your image path
 
         // Set transparency for the watermark (adjust as needed)
-        PdfExtGState gs = new PdfExtGState();
-        gs.setFillOpacity(0.5f); // 50% opacity
+ //       PdfExtGState gs = new PdfExtGState();
+  //      gs.setFillOpacity(0.5f); // 50% opacity
         
         // Extract pdf file from path
         try (Stream<Path> paths = Files.walk(Paths.get(directoryPath))) {
@@ -109,19 +118,16 @@ public class PdfWatermarkApp {
             e.printStackTrace();
         }
 
- //       System.out.println("PDF file names: " + fileNames);
-        
-        //iterate through eache file and add watermark
+ 
         int i=1;
         
-        //test
-       
+
         for (String item: fileNames) {
         	
         	System.out.println(inputPdfPath+item.toString());	
         	System.out.println(outputPdfPath + item.toString());
         	
-        	modPdf(item, image, i, inputPdfPath, outputPdfPath, gs);
+        	modPdf(item, i, inputPdfPath, outputPdfPath);
         
                 
         i=i+1;
