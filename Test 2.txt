@@ -1,8 +1,0 @@
-Common 2.1
-<<<<<<< HEAD
-Branch 2 2.2
-Branch 2 2.3
-=======
-Master 2.2
-Master 2.3
->>>>>>> master
